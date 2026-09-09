@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Patient Risk Assessment</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+body {
+
+    background: #eef5f9;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+.container {
+
+    width: 380px;
+
+    min-height: 650px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 5px 25px rgba(0,0,0,0.15);
+
+    overflow: hidden;
+
+}
+
+
+.frame {
+
+    display: none;
+
+    padding: 40px 30px;
+
+    min-height: 650px;
+
+}
+
+
+.frame.active {
+
+    display: block;
+
+}
+
+
+.logo {
+
+    text-align: center;
+
+    font-size: 45px;
+
+    margin-bottom: 15px;
+
+}
+
+
+h1 {
+
+    text-align: center;
+
+    color: #176b87;
+
+    margin-bottom: 15px;
+
+}
+
+
+h2 {
+
+    color: #176b87;
+
+    margin-bottom: 25px;
+
+}
+
+
+p {
+
+    text-align: center;
+
+    color: #666;
+
+    line-height: 1.5;
+
+    margin-bottom: 25px;
+
+}
+
+
+label {
+
+    display: block;
+
+    margin: 15px 0 7px;
+
+    color: #333;
+
+    font-weight: bold;
+
+}
+
+
+input,
+select {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+}
+
+
+button {
+
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 25px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #176b87;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+button:hover {
+
+    background: #0e5269;
+
+}
+
+
+.back {
+
+    background: #ddd;
+
+    color: #333;
+
+    margin-top: 12px;
+
+}
+
+
+.back:hover {
+
+    background: #ccc;
+
+}
+
+
+.card {
+
+    background: #f4f9fb;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.risk {
+
+    text-align: center;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    margin: 25px 0;
+
+}
+
+
+.risk h3 {
+
+    font-size: 28px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.low {
+
+    background: #dff5e5;
+
+}
+
+
+.low h3 {
+
+    color: #218838;
+
+}
+
+
+.medium {
+
+    background: #fff3cd;
+
+}
+
+
+.medium h3 {
+
+    color: #d48b00;
+
+}
+
+
+.high {
+
+    background: #f8d7da;
+
+}
+
+
+.high h3 {
+
+    color: #c82333;
+
+}
+
+
+.success {
+
+    text-align: center;
+
+    background: #e8f7ee;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    margin-top: 25px;
+
+}
+
+
+.success h3 {
+
+    color: #218838;
+
+    margin-bottom: 10px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- ================================= -->
+<!-- FRAME 1 : LOGIN -->
+<!-- ================================= -->
+
+<div id="login" class="frame active">
+
+    <div class="logo">
+        🏥
+    </div>
+
+    <h1>
+        Patient Care
+    </h1>
+
+    <p>
+        Login to access the patient risk assessment system.
+    </p>
+
+
+    <label>
+        Phone Number
+    </label>
+
+    <input
+        type="tel"
+        id="phoneLogin"
+        placeholder="Enter phone number"
+        maxlength="10"
+    >
+
+
+    <button onclick="loginUser()">
+
+        LOGIN / SIGN IN
+
+    </button>
+  
+    <button onclick="showFrame('register')" class="back">
+
+    REGISTER NEW PATIENT
+
+</button>
+
+</div>
+<!-- ================================= -->
+<!-- FRAME : REGISTER NEW PATIENT -->
+<!-- ================================= -->
+
+<div id="register" class="frame">
+
+    <div class="logo">
+        📝
+    </div>
+
+    <h2>
+        New Patient Registration
+    </h2>
+
+    <label>
+        Phone Number
+    </label>
+
+    <input
+        type="tel"
+        id="phoneRegister"
+        placeholder="Enter phone number"
+        maxlength="10"
+    >
+
+    <label>
+        Patient Name
+    </label>
+
+    <input
+        type="text"
+        id="registerName"
+        placeholder="Enter patient name"
+    >
+
+    <label>
+        Age
+    </label>
+
+    <input
+        type="number"
+        id="registerAge"
+        placeholder="Enter age"
+    >
+
+    <label>
+        Gender
+    </label>
+
+    <select id="registerGender">
+
+        <option value="">
+            Select Gender
+        </option>
+
+        <option value="Male">
+            Male
+        </option>
+
+        <option value="Female">
+            Female
+        </option>
+
+        <option value="Other">
+            Other
+        </option>
+
+    </select>
+
+    <button onclick="registerPatient()">
+
+        REGISTER PATIENT
+
+    </button>
+
+    <button
+        class="back"
+        onclick="showFrame('login')"
+    >
+
+        BACK TO LOGIN
+
+    </button>
+
+</div>
+
+<!-- ================================= -->
+<!-- FRAME 2 : PATIENT DETAILS -->
+<!-- ================================= -->
+
+<div id="patient" class="frame">
+
+    <h2>
+        Patient Details
+    </h2>
+
+
+    <div class="card">
+
+
+        <label>
+            Patient Name
+        </label>
+
+        <input
+            type="text"
+            id="patientName"
+            placeholder="Enter patient name"
+        >
+
+
+        <label>
+            Age
+        </label>
+
+        <input
+            type="number"
+            id="patientAge"
+            placeholder="Enter age"
+        >
+
+
+        <label>
+            Gender
+        </label>
+
+        <select id="patientGender">
+
+            <option value="">
+                Select Gender
+            </option>
+
+            <option value="Male">
+                Male
+            </option>
+
+            <option value="Female">
+                Female
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <button onclick="startAssessment()">
+
+        START ASSESSMENT
+
+    </button>
+
+
+    <button
+        class="back"
+        onclick="showFrame('login')"
+    >
+
+        BACK
+
+    </button>
+
+</div>
+
+
+
+<!-- ================================= -->
+<!-- FRAME 3 : ASSESSMENT -->
+<!-- ================================= -->
+
+<div id="assessment" class="frame">
+
+    <h2>
+        Health Assessment
+    </h2>
+
+
+    <label>
+        Systolic Blood Pressure
+    </label>
+
+    <input
+        type="number"
+        id="systolic"
+        placeholder="Example: 120"
+    >
+
+
+    <label>
+        Diastolic Blood Pressure
+    </label>
+
+    <input
+        type="number"
+        id="diastolic"
+        placeholder="Example: 80"
+    >
+
+
+    <label>
+        Blood Sugar (mg/dL)
+    </label>
+
+    <input
+        type="number"
+        id="sugar"
+        placeholder="Example: 100"
+    >
+
+
+    <label>
+        Heart Rate (BPM)
+    </label>
+
+    <input
+        type="number"
+        id="heartRate"
+        placeholder="Example: 72"
+    >
+
+
+    <label>
+        Symptoms
+    </label>
+
+    <select id="symptoms">
+
+        <option value="None">
+            No major symptoms
+        </option>
+
+        <option value="Fever">
+            Fever
+        </option>
+
+        <option value="Dizziness">
+            Dizziness
+        </option>
+
+        <option value="Chest Pain">
+            Chest Pain
+        </option>
+
+        <option value="Breathing Difficulty">
+            Breathing Difficulty
+        </option>
+
+    </select>
+
+
+    <button onclick="calculateRisk()">
+
+        SUBMIT ASSESSMENT
+
+    </button>
+
+
+    <button
+        class="back"
+        onclick="showFrame('patient')"
+    >
+
+        BACK
+
+    </button>
+
+</div>
+
+
+
+<!-- ================================= -->
+<!-- FRAME 4 : RISK RESULT -->
+<!-- ================================= -->
+
+<div id="risk" class="frame">
+
+    <h2>
+        Risk Result
+    </h2>
+
+
+    <div class="card">
+
+        <p>
+            <b>Patient:</b>
+            <span id="resultName"></span>
+        </p>
+
+
+        <p>
+            <b>Age:</b>
+            <span id="resultAge"></span>
+        </p>
+
+
+        <p>
+            <b>Blood Pressure:</b>
+            <span id="resultBP"></span>
+        </p>
+
+
+        <p>
+            <b>Blood Sugar:</b>
+            <span id="resultSugar"></span>
+            mg/dL
+        </p>
+
+
+        <p>
+            <b>Heart Rate:</b>
+            <span id="resultHeart"></span>
+            BPM
+        </p>
+
+
+        <p>
+            <b>Symptoms:</b>
+            <span id="resultSymptoms"></span>
+        </p>
+
+    </div>
+
+
+    <div
+        id="riskBox"
+        class="risk"
+    >
+
+        <h3 id="riskLevel"></h3>
+
+        <p id="riskMessage"></p>
+
+    </div>
+
+
+    <button onclick="showFrame('referral')">
+
+        PROCEED TO REFERRAL
+
+    </button>
+
+
+    <button
+        class="back"
+        onclick="showFrame('assessment')"
+    >
+
+        BACK
+
+    </button>
+
+</div>
+
+
+
+<!-- ================================= -->
+<!-- FRAME 5 : REFERRAL -->
+<!-- ================================= -->
+
+<div id="referral" class="frame">
+
+    <div class="logo">
+        📋
+    </div>
+
+
+    <h2>
+        Medical Referral
+    </h2>
+
+
+    <div class="card">
+
+        <p>
+
+            <b>Patient:</b>
+
+            <span id="referralName"></span>
+
+        </p>
+
+
+        <label>
+            Select Department
+        </label>
+
+
+        <select id="department">
+
+            <option value="">
+                Select Department
+            </option>
+
+            <option value="General Medicine">
+                General Medicine
+            </option>
+
+            <option value="Cardiology">
+                Cardiology
+            </option>
+
+            <option value="Emergency">
+                Emergency
+            </option>
+
+            <option value="Diabetes Care">
+                Diabetes Care
+            </option>
+
+        </select>
+
+
+        <label>
+            Preferred Date
+        </label>
+
+
+        <input
+            type="date"
+            id="date"
+        />
+
+    </div>
+
+
+    <button onclick="completeReferral()">
+
+        CONFIRM REFERRAL
+
+    </button>
+
+
+    <button
+        class="back"
+        onclick="showFrame('risk')"
+    >
+
+        BACK
+
+    </button>
+
+
+    <div id="confirmation"></div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+// =================================
+// SCREEN NAVIGATION
+// =================================
+
+function showFrame(frameId) {
+
+    let frames =
+        document.querySelectorAll(".frame");
+
+
+    frames.forEach(function(frame) {
+
+        frame.classList.remove("active");
+
+    });
+
+
+    document
+        .getElementById(frameId)
+        .classList.add("active");
+}
+
+
+
+// =================================
+// LOGIN
+// =================================
+
+async function loginUser() {
+
+
+    let phone =
+        document
+        .getElementById("phoneLogin")
+        .value
+        .trim();
+
+
+    if (phone === "") {
+
+        alert(
+            "Please enter your phone number."
+        );
+
+        return;
+    }
+
+
+    try {
+
+
+        let response =
+            await fetch("/login", {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                    "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    phone: phone
+
+                })
+
+            });
+
+
+        let data =
+            await response.json();
+
+
+        if (data.success) {
+
+
+            // Save patient information
+            localStorage.setItem(
+                "patient",
+                JSON.stringify(data.patient)
+            );
+
+
+            // Automatically display saved information
+
+            document
+                .getElementById("patientName")
+                .value =
+                data.patient.name;
+
+
+            document
+                .getElementById("patientAge")
+                .value =
+                data.patient.age;
+
+
+            document
+                .getElementById("patientGender")
+                .value =
+                data.patient.gender;
+
+
+            alert(
+                "Login successful! Patient details loaded."
+            );
+
+
+            showFrame("patient");
+
+
+        }
+
+        else {
+
+            alert(data.message);
+
+        }
+
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Cannot connect to the backend. Make sure Flask is running."
+        );
+
+    }
+
+}
+
+// =================================
+// REGISTER NEW PATIENT
+// =================================
+
+async function registerPatient() {
+
+    let phone =
+        document.getElementById("phoneRegister").value.trim();
+
+    let name =
+        document.getElementById("registerName").value.trim();
+
+    let age =
+        document.getElementById("registerAge").value;
+
+    let gender =
+        document.getElementById("registerGender").value;
+
+
+    // Check fields
+
+    if (
+        phone === "" ||
+        name === "" ||
+        age === "" ||
+        gender === ""
+    ) {
+
+        alert("Please enter all patient details.");
+
+        return;
+    }
+
+
+    try {
+
+        let response = await fetch("/register", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                phone: phone,
+                name: name,
+                age: age,
+                gender: gender
+
+            })
+
+        });
+
+
+        let data = await response.json();
+
+
+        if (data.success) {
+
+            alert(data.message);
+
+
+            // Put registered details into patient screen
+
+            document.getElementById("phoneLogin").value = phone;
+
+            document.getElementById("patientName").value = name;
+
+            document.getElementById("patientAge").value = age;
+
+            document.getElementById("patientGender").value = gender;
+
+
+            // Go to patient details
+
+            showFrame("patient");
+
+        }
+
+        else {
+
+            alert(data.message);
+
+        }
+
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Cannot connect to Flask. Make sure app.py is running."
+        );
+
+    }
+
+}
+
+
+// =================================
+// START ASSESSMENT
+// SAVE PATIENT
+// =================================
+
+async function startAssessment() {
+
+
+    let name =
+        document
+        .getElementById("patientName")
+        .value
+        .trim();
+
+
+    let age =
+        document
+        .getElementById("patientAge")
+        .value;
+
+
+    let gender =
+        document
+        .getElementById("patientGender")
+        .value;
+
+
+    let phone =
+        document
+        .getElementById("phoneLogin")
+        .value
+        .trim();
+
+
+    if (
+        name === "" ||
+        age === "" ||
+        gender === ""
+    ) {
+
+        alert(
+            "Please enter all patient details."
+        );
+
+        return;
+    }
+
+
+    try {
+
+
+        let response =
+            await fetch("/register", {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                    "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    phone: phone,
+
+                    name: name,
+
+                    age: age,
+
+                    gender: gender
+
+                })
+
+            });
+
+
+        let data =
+            await response.json();
+
+
+        if (data.success) {
+
+
+            // Save patient locally too
+
+            localStorage.setItem(
+                "patient",
+                JSON.stringify({
+
+                    phone: phone,
+
+                    name: name,
+
+                    age: age,
+
+                    gender: gender
+
+                })
+            );
+
+
+            alert(
+                "Patient information saved successfully!"
+            );
+
+
+            showFrame("assessment");
+
+
+        }
+
+        else {
+
+            alert(data.message);
+
+        }
+
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Cannot connect to backend. Make sure Flask is running."
+        );
+
+    }
+
+}
+
+
+
+// =================================
+// CALCULATE RISK
+// =================================
+
+function calculateRisk() {
+
+
+    let name =
+        document
+        .getElementById("patientName")
+        .value;
+
+
+    let age =
+        document
+        .getElementById("patientAge")
+        .value;
+
+
+    let systolic =
+        Number(
+            document
+            .getElementById("systolic")
+            .value
+        );
+
+
+    let diastolic =
+        Number(
+            document
+            .getElementById("diastolic")
+            .value
+        );
+
+
+    let sugar =
+        Number(
+            document
+            .getElementById("sugar")
+            .value
+        );
+
+
+    let heartRate =
+        Number(
+            document
+            .getElementById("heartRate")
+            .value
+        );
+
+
+    let symptoms =
+        document
+        .getElementById("symptoms")
+        .value;
+
+
+
+    if (
+        !systolic ||
+        !diastolic ||
+        !sugar ||
+        !heartRate
+    ) {
+
+        alert(
+            "Please enter all health assessment values."
+        );
+
+        return;
+    }
+
+
+
+    // =================================
+    // RISK SCORE
+    // =================================
+
+    let score = 0;
+
+
+    // Blood Pressure
+
+    if (
+        systolic >= 140 ||
+        diastolic >= 90
+    ) {
+
+        score += 2;
+
+    }
+
+    else if (
+        systolic >= 130 ||
+        diastolic >= 80
+    ) {
+
+        score += 1;
+
+    }
+
+
+
+    // Blood Sugar
+
+    if (sugar >= 200) {
+
+        score += 2;
+
+    }
+
+    else if (sugar >= 140) {
+
+        score += 1;
+
+    }
+
+
+
+    // Heart Rate
+
+    if (
+        heartRate < 50 ||
+        heartRate > 120
+    ) {
+
+        score += 2;
+
+    }
+
+    else if (
+        heartRate < 60 ||
+        heartRate > 100
+    ) {
+
+        score += 1;
+
+    }
+
+
+
+    // Symptoms
+
+    if (
+        symptoms === "Chest Pain" ||
+        symptoms === "Breathing Difficulty"
+    ) {
+
+        score += 3;
+
+    }
+
+    else if (
+        symptoms === "Fever" ||
+        symptoms === "Dizziness"
+    ) {
+
+        score += 1;
+
+    }
+
+
+
+    // =================================
+    // DETERMINE RISK
+    // =================================
+
+    let riskLevel;
+
+    let riskMessage;
+
+    let riskClass;
+
+
+
+    if (score <= 2) {
+
+        riskLevel =
+            "LOW RISK";
+
+        riskMessage =
+            "The entered values are generally within the expected range. Continue regular health monitoring.";
+
+        riskClass =
+            "low";
+
+    }
+
+
+    else if (score <= 5) {
+
+        riskLevel =
+            "MEDIUM RISK";
+
+        riskMessage =
+            "Some of the entered health values require attention. Consider consulting a healthcare professional.";
+
+        riskClass =
+            "medium";
+
+    }
+
+
+    else {
+
+        riskLevel =
+            "HIGH RISK";
+
+        riskMessage =
+            "Multiple health indicators require prompt professional evaluation.";
+
+        riskClass =
+            "high";
+
+    }
+
+
+
+    // =================================
+    // DISPLAY RESULT
+    // =================================
+
+    document
+        .getElementById("resultName")
+        .textContent =
+        name;
+
+
+    document
+        .getElementById("resultAge")
+        .textContent =
+        age;
+
+
+    document
+        .getElementById("resultBP")
+        .textContent =
+        systolic +
+        " / " +
+        diastolic;
+
+
+    document
+        .getElementById("resultSugar")
+        .textContent =
+        sugar;
+
+
+    document
+        .getElementById("resultHeart")
+        .textContent =
+        heartRate;
+
+
+    document
+        .getElementById("resultSymptoms")
+        .textContent =
+        symptoms;
+
+
+
+    document
+        .getElementById("riskLevel")
+        .textContent =
+        riskLevel;
+
+
+    document
+        .getElementById("riskMessage")
+        .textContent =
+        riskMessage;
+
+
+    document
+        .getElementById("riskBox")
+        .className =
+        "risk " + riskClass;
+
+
+    document
+        .getElementById("referralName")
+        .textContent =
+        name;
+
+
+    showFrame("risk");
+
+}
+
+
+
+// =================================
+// REFERRAL
+// =================================
+
+function completeReferral() {
+
+
+    let department =
+        document
+        .getElementById("department")
+        .value;
+
+
+    let date =
+        document
+        .getElementById("date")
+        .value;
+
+
+    if (
+        department === "" ||
+        date === ""
+    ) {
+
+        alert(
+            "Please select department and date."
+        );
+
+        return;
+    }
+
+
+    document
+        .getElementById("confirmation")
+        .innerHTML = `
+
+        <div class="success">
+
+            <h3>
+                ✓ Referral Confirmed
+            </h3>
+
+            <p>
+                Patient referral has been
+                successfully submitted.
+            </p>
+
+            <p>
+                Department:
+                <b>${department}</b>
+            </p>
+
+            <p>
+                Date:
+                <b>${date}</b>
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+</script>
+
+
+</body>
+
+</html>
